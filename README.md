@@ -6,6 +6,8 @@ When we are able to base64 files up to 3GB we can 'start the mediaserver'
 
 in linux , the testfile is created like this .. and soforth
 
+``` > fallocate -l 500mb /tmp/500mb.zip```
+
 ``` > fallocate -l 1000mb /tmp/1000mb.zip```
 
 Setting the main-java file in the pom.xml in the 'org.apache.maven.plugins'
@@ -25,17 +27,20 @@ Posting to Mediaserver = OK
 (2) 1000MB
 
 1. mvn clean package
-2. java -Xms512m **-Xmx12G** -jar target/mediaClient.jar 
+2. java -Xms512m **-Xmx12G** -jar target/mediaClient.jar /tmp/1000mb.zip
 
 String metadataFormatted = StringEscapeUtils.unescapeJavaScript(metadata.toString()); <p>
 -> import org.apache.commons.text.StringEscapeUtils; (upgrade : using  the latest version of 'commons-text', version 1.8)
+
+StringEntity : https://stackoverflow.com/questions/21022174/json-string-too-large-for-stringentity
+
 
 here -> OutOfMemoryError
 
 action = increase heap
 
 1. mvn clean package
-2. java -Xms512m **-Xmx16G** -jar target/mediaClient.jar
+2. java -Xms512m **-Xmx16G** -jar target/mediaClient.jar /tmp/1000mb.zip
 
 error:
 
