@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -64,24 +63,24 @@ public class NewClientStringPosting {
         metadata.put("fileName", "fileName");
         metadata.put("fileDataBase64", result);
 
-        String metadataFormatted = StringEscapeUtils.unescapeJavaScript(metadata.toString());
-        StringToFile.saveFile("/home/ingimar/ingimar-json-1.log",metadataFormatted);
-
-        StringEntity entity = new StringEntity(metadataFormatted, ContentType.APPLICATION_JSON);
-        
-
-        HttpPost post = new HttpPost(URL);
-        post.setEntity(entity);
-        response = client.execute(post);
-        HttpEntity responseEntity = response.getEntity();
-
-        String responseFromMediaserver = EntityUtils.toString(responseEntity, "UTF-8");
-        System.out.println("\n****");
-        System.out.println("Response from the mediaserver is : " + responseFromMediaserver);
-
-        JSONObject json = new JSONObject(responseFromMediaserver);
-        String uuid = json.getString("uuid");
-        System.out.println("UUID is " + uuid);
+//        String metadataFormatted = StringEscapeUtils.unescapeJavaScript(metadata.toString());
+//        StringToFile.saveFile("/home/ingimar/ingimar-json-1.log",metadataFormatted);
+//
+//        StringEntity entity = new StringEntity(metadataFormatted, ContentType.APPLICATION_JSON);
+//        
+//
+//        HttpPost post = new HttpPost(URL);
+//        post.setEntity(entity);
+//        response = client.execute(post);
+//        HttpEntity responseEntity = response.getEntity();
+//
+//        String responseFromMediaserver = EntityUtils.toString(responseEntity, "UTF-8");
+//        System.out.println("\n****");
+//        System.out.println("Response from the mediaserver is : " + responseFromMediaserver);
+//
+//        JSONObject json = new JSONObject(responseFromMediaserver);
+//        String uuid = json.getString("uuid");
+//        System.out.println("UUID is " + uuid);
 
     }
 

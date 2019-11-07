@@ -2,7 +2,7 @@ package se.nrm.bio.mediaserver.testing.base64;
 
 import com.google.common.io.BaseEncoding;
 import java.io.IOException;
-import org.apache.commons.lang.StringEscapeUtils;
+//import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -17,6 +17,7 @@ import org.codehaus.jettison.json.JSONObject;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import org.apache.commons.text.StringEscapeUtils;
 
 /**
  * 2019-11-05: Använder commons codec 1.16 -> java -Xms512m -Xmx20480m -jar
@@ -31,22 +32,25 @@ import java.nio.file.Paths;
 public class NewClientEncodeGuavaPost {
 
     public static void main(String[] args) throws IOException, JSONException {
-
+        String filePath = "/tmp/500mb.zip";
+        if (args.length > 0) {
+            filePath = args[0];
+            final Path path = Paths.get(filePath);
+            boolean readable = Files.isReadable(path);
+            if (!readable) {
+                System.out.println("File does not exist ".concat(filePath));
+                System.out.println("Proper Usage is: java - Xms512m - Xmx12G - jar target/mediaClient.jar <file>");
+                System.exit(0);
+            }
+        }
         NewClientEncodeGuavaPost main = new NewClientEncodeGuavaPost();
         boolean isMediaserverRunning = false;
-
-        main.posting(isMediaserverRunning);
-
+        main.posting(isMediaserverRunning, filePath);
     }
 
-    private static void posting(boolean isMediaserverRunning) throws IOException, JSONException {
+    private static void posting(boolean isMediaserverRunning, String filePath) throws IOException, JSONException {
         System.out.println("Starting ".concat("NewClientEncodeGuavaPost"));
         String URL = Util.getLocalURL();
-
-//        String filePath = "/tmp/Testbild.jpg";
-//        String filePath = "/tmp/500mb.zip";
-        String filePath = "/tmp/1000mb.zip"; 
-
         System.out.println("\t Post to  : ".concat(URL));
         System.out.println("\t file : ".concat(filePath).concat("\n"));
 
@@ -66,7 +70,8 @@ public class NewClientEncodeGuavaPost {
         metadata.put("fileName", "fileName");
         metadata.put("fileDataBase64", contentToBeSaved);
 
-        String metadataFormatted = StringEscapeUtils.unescapeJavaScript(metadata.toString());
+//        String metadataFormatted = StringEscapeUtils.unescapeJavaScript(metadata.toString());
+        String metadataFormatted = StringEscapeUtils.unescapeEcmaScript(metadata.toString());
 
         StringEntity entity = new StringEntity(metadataFormatted, ContentType.APPLICATION_JSON);
 
