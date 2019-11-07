@@ -10,13 +10,16 @@ in linux , the testfile is created like this .. and soforth
 
 Setting the main-java file in the pom.xml in the 'org.apache.maven.plugins'
 
-**Testing the Guava-encoding , 1-6**
+**Testing the Guava-encoding , Steps : 1 to 6**
 
 (1) 500MB
 mvn clean package
 java -Xms512m -Xmx12G -jar target/mediaClient.jar 
 
-RESULT = OK.
+Result
+Encoding = OK
+
+Posting to Mediaserver = OK
 
 (2) 1000MB
 
