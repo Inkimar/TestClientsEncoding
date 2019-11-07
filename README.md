@@ -23,6 +23,12 @@ RESULT = OK.
 mvn clean package
 java -Xms512m -Xmx12G -jar target/mediaClient.jar 
 
+String metadataFormatted = StringEscapeUtils.unescapeJavaScript(metadata.toString());
+-> import org.apache.commons.lang.StringEscapeUtils;
+
+here -> OutOfMemoryError
+
+
 RESULT= 
 
 
