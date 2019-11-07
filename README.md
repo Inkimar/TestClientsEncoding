@@ -13,8 +13,9 @@ Setting the main-java file in the pom.xml in the 'org.apache.maven.plugins'
 **Testing the Guava-encoding , Steps : 1 to 6**
 
 (1) 500MB
-mvn clean package
-java -Xms512m -Xmx12G -jar target/mediaClient.jar 
+
+1. mvn clean package
+2. java -Xms512m **-Xmx12G** -jar target/mediaClient.jar 
 
 Result
 Encoding = OK
@@ -23,13 +24,29 @@ Posting to Mediaserver = OK
 
 (2) 1000MB
 
-mvn clean package
-java -Xms512m -Xmx12G -jar target/mediaClient.jar 
+1. mvn clean package
+2. java -Xms512m **-Xmx12G** -jar target/mediaClient.jar 
 
-String metadataFormatted = StringEscapeUtils.unescapeJavaScript(metadata.toString());
--> import org.apache.commons.lang.StringEscapeUtils; (using version 2.6)
+String metadataFormatted = StringEscapeUtils.unescapeJavaScript(metadata.toString()); <p>
+-> import org.apache.commons.text.StringEscapeUtils; (upgrade : using  the latest version of 'commons-text', version 1.8)
 
 here -> OutOfMemoryError
+
+action = increase heap
+
+1. mvn clean package
+2. java -Xms512m **-Xmx16G** -jar target/mediaClient.jar
+
+error:
+
+```
+Exception in thread "main" java.lang.IllegalArgumentException: Negative buffer size
+        at java.io.StringWriter.<init>(StringWriter.java:67)
+        at org.apache.commons.text.translate.CharSequenceTranslator.translate(CharSequenceTranslator.java:67)
+        at org.apache.commons.text.StringEscapeUtils.unescapeEcmaScript(StringEscapeUtils.java:613)
+        at se.nrm.bio.mediaserver.testing.base64.NewClientEncodeGuavaPost.posting(NewClientEncodeGuavaPost.java:74)
+        at se.nrm.bio.mediaserver.testing.base64.NewClientEncodeGuavaPost.main(NewClientEncodeGuavaPost.java:48)
+```
 
 
 RESULT= 
